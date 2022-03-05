@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+print_message () {
+    printf "$1" | less
+}
+
+TMP_FILE=$(mktemp)
+
+if [[ -d "$nnn" ]]
+then
+    print_message "GPG_OPEN is supposed to work with files only. Given item is a directory!"
+    
+    exit 1
+fi
+
+if ! gpg -d $nnn > $TMP_FILE
+then
+    print_message "Failed to decrypt file!"
+
+    exit 1
+fi
+
+xdg-open "$TMP_FILE"
